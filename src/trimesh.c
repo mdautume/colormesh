@@ -111,6 +111,7 @@ void trimesh_create_from_dem(struct trimesh *m, float *x, int w, int h)
 		t[j*w + i] = trimesh_add_vertex(m, i, j, x[j*w + i]);
 	else
 		t[j*w + i] = -1;
+        
 
 	// add the triangles all of whose whose vertices are good
 	for (int j = 0; j < h-1; j++)

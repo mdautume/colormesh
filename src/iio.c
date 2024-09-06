@@ -3899,7 +3899,7 @@ static int read_beheaded_whatever(struct iio_image *x,
 
 	//char command_format[] = "convert - %s < %s\0";
 	//char command_format[] = "/usr/bin/convert - %s < %s\0";
-	char command_format[] = "/usr/local/bin/gm convert - %s < %s\0";
+	char command_format[] = "/usr/bin/gm convert - %s < %s\0";
 	char ppmname[strlen(filename)+10];
 	snprintf(ppmname, FILENAME_MAX+10, "%s.ppm", filename);
 	char command[strlen(command_format)+1+2*strlen(filename)];
