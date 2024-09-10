@@ -193,6 +193,7 @@ void read_rpc_file_xml_pleiades(struct rpc *p, char *filename)
 void read_rpc_file_xml_worldview(struct rpc *p, char *filename)
 {
 	FILE *f = xfopen(filename, "r");
+        fprintf(stderr, "read rpc file worldview\n");
 	int n = 0x400;
 	while (1) {
 		char line[n], tag[n], *sl = fgets(line, n, f);
@@ -205,12 +206,13 @@ void read_rpc_file_xml_worldview(struct rpc *p, char *filename)
 		if (0 == strhas(tag, "COEF")) {
 			double y[20];
 			int r = get_xml_tagged_list(y, tag, line);
-			if (r == 22)
+			if (r == 22){
 				for (int i = 0; i < 20; i++) {
-					char tmp[4]; snprintf(tmp, "_%d", i+1);
+					char tmp[4]; sprintf(tmp, "_%d", i+1);
 					char tag_i[16]; strcpy(tag_i, tag);
 					add_tag_to_rpc(p, strcat(tag_i, tmp), y[i]);
 				}
+                        }
 		}
 	}
 	xfclose(f);
@@ -373,6 +375,7 @@ static void decompose_vector_basis(double a[2], double x[2], double u[2],
 static void eval_nrpc_iterative(double *result,
 		struct rpc *p, double x, double y, double z)
 {
+//    fprintf(stderr, "start nrpc iterations");
 	double a[2];
 	double x0[2];
 	double x1[2];

@@ -22,6 +22,7 @@ int main(int c, char *v[])
     // read the whole input DSM (typically, rather small)
     int w, h;
     float *x = iio_read_image_float(filename_dsm, &w, &h);
+    fprintf(stderr, "image read\n");
     if (!x)
         return fprintf(stderr, "iio_read(%s) failed\n", filename_dsm);
 

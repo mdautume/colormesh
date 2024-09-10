@@ -78,6 +78,7 @@ void colorize(
         out_pan[i] = NAN;}
     for (int i = 0; i < pdm * m->nv; i++)
         out_msi[i] = NAN;
+    fprintf(stderr, "signed_zone %d\n", signed_zone);
 
     // for each vertex, get color informations if pixel seen by satellite
     for (int v = 0; v < m->nv; v++)
@@ -93,6 +94,9 @@ void colorize(
             double ij_msi[2];
             rpc_projection(ij_pan, pan_rpc, lonlatheight);
             rpc_projection(ij_msi, msi_rpc, lonlatheight);
+//            fprintf(stderr, "utm %d %f %f ; lonlath %f %f %f ; ij %f %f\n", \
+//                    signed_zone, coord[pd*v], coord[pd*v+1], lonlat[0], lonlat[1], \
+//                    coord[pd*v+2], ij_msi[0], ij_msi[1]);
 
             // fill panchromatic output
             double intensity = gdal_getpixel_bicubic(huge_pan_img[0], ij_pan[0], ij_pan[1]);
@@ -238,8 +242,10 @@ int main(int c, char *v[])
         huge_msi_img[i] = GDALGetRasterBand(huge_dataset, i+1);
 
     // open the reference rpc
+    fprintf(stderr, "open reference msi rpc\n");
     struct rpc msi_rpc[1];
     read_rpc_file_xml(msi_rpc, filename_msi_rpc);
+    fprintf(stderr, "done\n");
 
     // read vertices utm coordinates
     int nv, un, pd;
@@ -248,6 +254,7 @@ int main(int c, char *v[])
         return fprintf(stderr, "iio_read(%s) failed\n", filename_coord);
 
     // read scaled mesh
+    fprintf(stderr, "read scaled mesh\n");
     struct trimesh m[1];
     trimesh_read_from_off(m, filename_mesh);
 
@@ -258,6 +265,7 @@ int main(int c, char *v[])
     double *out_msi = malloc(pdm * m->nv * sizeof(double));
 
     // get intensity, msi and pansharpened rgb values
+    fprintf(stderr, "get intensity, msi and rgb values\n");
     colorize(out_pan, out_msi, out_rgb, m, utm_coord, pan_rpc, msi_rpc, signed_zone, huge_pan_img, huge_msi_img, pd, pdm);
 
     // get shadow location

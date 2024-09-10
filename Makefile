@@ -1,4 +1,4 @@
-CFLAGS ?= -O3 
+CFLAGS ?= -O3 -DI_CAN_HAS_LIBPNG -DI_CAN_HAS_LIBJPEG -DI_CAN_HAS_LIBTIFF
 CXXFLAGS ?= -O3 -std=c++14
 LDLIBS += -lm -lfftw3f -lgdal -lz -ltiff -lpng -ljpeg -lstdc++ \
 	  -fsanitize=address -lGeographicLib
