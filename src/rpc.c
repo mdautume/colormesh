@@ -340,8 +340,9 @@ static void eval_nrpci(double *result,
 	double deny = eval_pol20(p->ideny, x, y, z);
 	result[0] = numx/denx;
 	result[1] = numy/deny;
-	//fprintf(stderr, "\t\tnrpci{%p}(%g %g %g)=>",p,x,y,z);
-	//fprintf(stderr, "(%g %g)\n", result[0], result[1]);
+//	fprintf(stderr, "numx %f numy %f denx %f deny %f\n",numx, numy, denx, deny);
+//	fprintf(stderr, "\t\tnrpci{%p}(%g %g %g)=>",p,x,y,z);
+//	fprintf(stderr, "(%g %g)\n", result[0], result[1]);
 }
 
 static double l2_squared_dist(double a[2], double b[2])
@@ -438,10 +439,16 @@ void eval_rpci(double *result,
 	double nx = (x - p->ioffset[0])/p->iscale[0];
 	double ny = (y - p->ioffset[1])/p->iscale[1];
 	double nz = (z - p->ioffset[2])/p->iscale[2];
+//        fprintf(stderr, "nx %f ny %f nz %f\n", nx, ny, nz);
+//        fprintf(stderr, "x %f y %f z %f\n", x, y, z);
+//        fprintf(stderr, "ioffset %f %f %f\n", p->ioffset[0], p->ioffset[1], p->ioffset[2]);
+//        fprintf(stderr, "ioffset %f %f %f\n", p->iscale[0], p->iscale[1], p->iscale[2]);
 	double tmp[2];
 	eval_nrpci(tmp, p, nx, ny, nz);
 	result[0] = tmp[0] * p->scale[0] + p->offset[0];
 	result[1] = tmp[1] * p->scale[1] + p->offset[1];
+//	fprintf(stderr, "\t\tnrpci{%p}(%g %g %g)=>",p,x,y,z);
+//	fprintf(stderr, "(%g %g)\n", result[0], result[1]);
 }
 
 // evaluate a correspondence between two images given their rpc

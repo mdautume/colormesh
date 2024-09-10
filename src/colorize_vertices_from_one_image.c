@@ -81,6 +81,10 @@ void colorize(
     fprintf(stderr, "signed_zone %d\n", signed_zone);
 
     // for each vertex, get color informations if pixel seen by satellite
+//    double lonlatheight[3] = {-58.584848, -34.489127,  18.45892};
+//    double ij_pan[2];
+//    rpc_projection(ij_pan, pan_rpc, lonlatheight);
+//    fprintf(stderr, "rpc computation, lonlat : %f %f ; ij : %f %f", lonlatheight[0], lonlatheight[1], ij_pan[0], ij_pan[1]);
     for (int v = 0; v < m->nv; v++)
         if (!isnan(coord[pd*v]) && coord[pd*v+2] > -500)
         {
@@ -94,9 +98,9 @@ void colorize(
             double ij_msi[2];
             rpc_projection(ij_pan, pan_rpc, lonlatheight);
             rpc_projection(ij_msi, msi_rpc, lonlatheight);
-//            fprintf(stderr, "utm %d %f %f ; lonlath %f %f %f ; ij %f %f\n", \
+//            fprintf(stderr, "utm %d %f %f ; lonlath %f %f %f ; ij_msi %f %f ; ij_pan %f %f\n", \
 //                    signed_zone, coord[pd*v], coord[pd*v+1], lonlat[0], lonlat[1], \
-//                    coord[pd*v+2], ij_msi[0], ij_msi[1]);
+//                    coord[pd*v+2], ij_msi[0], ij_msi[1], ij_pan[0], ij_pan[1]);
 
             // fill panchromatic output
             double intensity = gdal_getpixel_bicubic(huge_pan_img[0], ij_pan[0], ij_pan[1]);
@@ -233,6 +237,7 @@ int main(int c, char *v[])
     // open the reference rpc
     struct rpc pan_rpc[1];
     read_rpc_file_xml(pan_rpc, filename_pan_rpc);
+//    print_rpc(stderr, pan_rpc, "/tmp/rpc.txt");
 
     // open the reference image and obtain its pixel dimension 
     huge_dataset = GDALOpen(filename_msi, GA_ReadOnly);
